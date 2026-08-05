@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code
+# settings.local.json contains secrets (API tokens) — never commit
+.claude/settings.local.json
+# .claude/skills symlinks are machine-specific absolute paths, recreated by `npx skills add`
+.claude/skills/
