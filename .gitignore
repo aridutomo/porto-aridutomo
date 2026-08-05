@@ -45,3 +45,8 @@ next-env.d.ts
 .claude/settings.local.json
 # .claude/skills symlinks are machine-specific absolute paths, recreated by `npx skills add`
 .claude/skills/
+
+# local-only skills (installed via `npx skills`, kept on disk, not tracked in git)
+.agents/
+.agent/
+skills-lock.json
