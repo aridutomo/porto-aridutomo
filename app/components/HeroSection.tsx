@@ -91,13 +91,6 @@ export default function HeroSection() {
             </div>
           </div>
         </div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-xs text-slate-400">{t.hero.scrollExplore}</span>
-          <div className="w-6 h-10 rounded-full border-2 border-slate-300 flex items-start justify-center p-2">
-            <div className="w-1 h-2 bg-blue-500 rounded-full animate-bounce" />
-          </div>
-        </div>
       </div>
     </section>
   );
