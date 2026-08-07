@@ -1,201 +1,180 @@
 @import "tailwindcss";
 
+/*
+  Design tokens. LIGHT is the default theme (:root).
+  Dark overrides live under :root.dark (toggled by ThemeToggle and the
+  no-FOUC script in layout.tsx). Utilities reference these via @theme
+  inline so they re-resolve at runtime when the theme flips.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #1a1a2e;
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --secondary: #0ea5e9;
-  --accent: #facc15;
-  --accent-light: #fde047;
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(37, 99, 235, 0.15);
+  --background: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --foreground: #0a0a0a;
+  --muted: #52525b;
+  --faint: #71717a;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  /* accent = readable text/links/icons on the light background */
+  --accent: #2563eb;
+  --accent-hover: #3b82f6;
+  /* accent-strong = filled buttons; white text passes WCAG AA on it */
+  --accent-strong: #1d4ed8;
+  --accent-strong-hover: #1e40af;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(37, 99, 235, 0.08);
+  --accent-glow: rgba(37, 99, 235, 0.14);
+  /* status colors for the contact form feedback */
+  --success: #16a34a;
+  --success-soft: rgba(22, 163, 74, 0.1);
+  --danger: #dc2626;
+  --danger-soft: rgba(220, 38, 38, 0.1);
+}
+
+:root.dark {
+  --background: #09090b;
+  --surface: #111113;
+  --surface-2: #18181b;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
+  --faint: #71717a;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+  --accent-strong: #2563eb;
+  --accent-strong-hover: #1d4ed8;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(96, 165, 250, 0.12);
+  --accent-glow: rgba(96, 165, 250, 0.18);
+  --success: #4ade80;
+  --success-soft: rgba(74, 222, 128, 0.12);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.12);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-light: var(--primary-light);
-  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-strong-hover: var(--accent-strong-hover);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-mono-geist);
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--background);
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 * {
-  scroll-margin-top: 80px;
+  scroll-margin-top: 5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans, system-ui, sans-serif);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Custom scrollbar */
+/* Text balancing for headings */
+.text-balance {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--foreground);
+}
+
+/* Custom scrollbar, theme-aware */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--background);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #2563eb, #0ea5e9);
-  border-radius: 4px;
+  background: var(--line-strong);
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
 }
 
-/* Glass effect for light theme */
-.glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(37, 99, 235, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+/* Focus ring baseline */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(37, 99, 235, 0.1);
-  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.08);
+/*
+  Theme-toggle icon visibility is driven by the html class, not React
+  state, so there is no hydration mismatch and no effect.
+*/
+.theme-light-only {
+  display: inline-flex;
+}
+.theme-dark-only {
+  display: none;
+}
+:root.dark .theme-light-only {
+  display: none;
+}
+:root.dark .theme-dark-only {
+  display: inline-flex;
 }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #2563eb, #0ea5e9, #facc15);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradient-shift 5s ease infinite;
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Animated gradient border */
-.gradient-border {
-  position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(135deg, #2563eb, #0ea5e9, #facc15, #2563eb);
-  background-size: 300% 300%;
-  animation: gradient-rotate 4s linear infinite;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-}
-
-@keyframes gradient-rotate {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Float animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Pulse glow */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.4), 0 0 60px rgba(14, 165, 233, 0.2); }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-/* Fade in up animation */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out forwards;
-}
-
-/* Staggered delays */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-
-/* Tech badge hover effect */
-.tech-badge {
-  transition: all 0.3s ease;
-}
-
-.tech-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.4);
-}
-
-/* Project card hover effect */
-.project-card {
-  transition: all 0.4s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
-}
-
-.project-card:hover .project-overlay {
-  opacity: 1;
-}
-
-/* Background gradient orbs */
-.bg-gradient-orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Grid pattern background */
-.grid-pattern {
-  background-image: linear-gradient(rgba(37, 99, 235, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-/* Reduced motion */
+/* Reduced motion: collapse every animation/transition */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
+
+/*
+  Gentle float used by the hero monogram core and its floating stack
+  badges. The reduced-motion rule above neutralizes it for users who
+  prefer less motion.
+*/
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

@@ -7,13 +7,18 @@ export default function LanguageToggle() {
 
   return (
     <button
+      type="button"
       onClick={toggleLocale}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-blue-50 text-sm font-medium transition-all duration-300 cursor-pointer"
       aria-label="Toggle language"
+      className="inline-flex items-center gap-1 rounded-lg border border-line px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-surface-2 cursor-pointer"
     >
-      <span className={`${locale === "id" ? "text-blue-600" : "text-slate-400"}`}>ID</span>
-      <span className="text-slate-300">/</span>
-      <span className={`${locale === "en" ? "text-blue-600" : "text-slate-400"}`}>EN</span>
+      <span className={locale === "id" ? "text-foreground" : "text-faint"}>
+        ID
+      </span>
+      <span className="text-faint">/</span>
+      <span className={locale === "en" ? "text-foreground" : "text-faint"}>
+        EN
+      </span>
     </button>
   );
 }

@@ -13,7 +13,6 @@ export const translations = {
     },
     // Hero Section
     hero: {
-      available: "Tersedia untuk proyek baru",
       greeting: "Hai, Saya",
       description: "Developer yang passionate dalam membangun aplikasi web dan mobile yang scalable. Mengubah ide-ide kompleks menjadi pengalaman digital yang elegan dan user-friendly.",
       viewWork: "Lihat Portofolio",
@@ -96,6 +95,9 @@ export const translations = {
       message: "Pesan",
       messagePlaceholder: "Ceritakan tentang proyek kamu...",
       send: "Kirim Pesan",
+      sending: "Mengirim...",
+      success: "Pesan berhasil terkirim! Saya akan segera membalas email kamu.",
+      error: "Gagal mengirim pesan. Silakan coba lagi atau email langsung ke saya.",
     },
     // Footer
     footer: {
@@ -116,7 +118,6 @@ export const translations = {
     },
     // Hero Section
     hero: {
-      available: "Available for new projects",
       greeting: "Hi, I'm",
       description: "Passionate developer building scalable web and mobile applications. Transforming complex ideas into elegant, user-friendly digital experiences.",
       viewWork: "View My Work",
@@ -199,6 +200,9 @@ export const translations = {
       message: "Message",
       messagePlaceholder: "Tell me about your project...",
       send: "Send Message",
+      sending: "Sending...",
+      success: "Message sent successfully! I'll get back to you soon.",
+      error: "Failed to send message. Please try again or email me directly.",
     },
     // Footer
     footer: {

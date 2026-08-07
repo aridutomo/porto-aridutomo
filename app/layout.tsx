@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 
-const inter = Inter({
-  variable: "--font-geist-sans",
+const geistSans = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-mono-geist",
   subsets: ["latin"],
   display: "swap",
 });
@@ -48,28 +48,25 @@ export const metadata: Metadata = {
   },
 };
 
+// Runs before paint to avoid a theme flash (FOUC). Default is light.
+const themeScript = `(function(){try{var s=localStorage.getItem('theme');var d=document.documentElement;if(s==='dark'){d.classList.add('dark')}else{d.classList.remove('dark')}}catch(e){}})()`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <GoogleAnalytics />
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-white text-slate-800 overflow-x-hidden`}
+        className={`${geistSans.variable} ${jetbrainsMono.variable} bg-background text-foreground font-sans antialiased overflow-x-hidden`}
       >
-        {/* Background gradient orbs - light theme */}
-        <div className="bg-gradient-orb w-[600px] h-[600px] -top-[200px] -left-[200px] bg-blue-400/30" />
-        <div className="bg-gradient-orb w-[500px] h-[500px] top-[40%] -right-[150px] bg-yellow-300/30" />
-        <div className="bg-gradient-orb w-[400px] h-[400px] bottom-[10%] left-[20%] bg-cyan-300/20" />
-
-        {/* Grid pattern overlay */}
-        <div className="fixed inset-0 grid-pattern pointer-events-none" />
-
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
 }
-

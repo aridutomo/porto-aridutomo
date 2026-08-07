@@ -1,95 +1,195 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import {
+  ArrowRight,
+  EnvelopeSimple,
+  GithubLogo,
+  LinkedinLogo,
+} from "@phosphor-icons/react";
 import { useLanguage } from "../context/LanguageContext";
+
+const roles = [
+  "Full Stack Developer",
+  "Backend Engineer",
+  "Mobile Developer",
+  "Frontend Developer",
+];
+
+const socials = [
+  {
+    href: "https://github.com",
+    label: "GitHub",
+    Icon: GithubLogo,
+  },
+  {
+    href: "https://www.linkedin.com/in/ari-dwi-utomo-a3358b353",
+    label: "LinkedIn",
+    Icon: LinkedinLogo,
+  },
+  {
+    href: "mailto:sosial.aridutomo@gmail.com",
+    label: "Email",
+    Icon: EnvelopeSimple,
+  },
+];
 
 export default function HeroSection() {
   const { t } = useLanguage();
-  const [mounted, setMounted] = useState(false);
-  const roles = ["Full Stack Developer", "Backend Engineer", "Mobile Developer", "Frontend Developer"];
+  const reduce = useReducedMotion();
   const [currentRole, setCurrentRole] = useState(0);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(timeout);
-  }, []);
-  useEffect(() => {
-    const interval = setInterval(() => { setCurrentRole((prev) => (prev + 1) % roles.length); }, 3000);
+    if (reduce) return;
+    const interval = setInterval(() => {
+      setCurrentRole((prev) => (prev + 1) % roles.length);
+    }, 2800);
     return () => clearInterval(interval);
-  }, [roles.length]);
+  }, [reduce]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden bg-linear-to-br from-blue-50 via-white to-yellow-50">
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className={`flex-1 text-center lg:text-left ${mounted ? "animate-fade-in-up" : "opacity-0"}`}>
-            {/* <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm text-slate-600">{t.hero.available}</span>
-            </div> */}
+    <section
+      id="home"
+      className="relative flex min-h-[90dvh] items-center overflow-hidden px-4 pb-20 pt-24 sm:px-6"
+    >
+      {/* Soft accent backdrop, motivated focal layer (not a neon glow) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[760px] -translate-x-1/2 rounded-full bg-accent-soft blur-[130px]"
+      />
 
-            <h1 className="text-3xl sm:text-5xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-6 text-slate-800">
-              {t.hero.greeting} <span className="gradient-text">Ari Dwi</span>
+      <div className="relative mx-auto w-full max-w-6xl">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+          {/* Copy */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-tighter sm:text-5xl lg:text-6xl">
+              <span className="text-muted">{t.hero.greeting}</span>{" "}
+              <span className="text-foreground">Ari Dwi Utomo</span>
             </h1>
 
-            <div className="h-12 mb-6 overflow-hidden">
-              <p key={currentRole} className="text-xl sm:text-2xl lg:text-3xl text-blue-600 animate-fade-in-up font-medium">{roles[currentRole]}</p>
+            <div className="mt-4 h-7 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={currentRole}
+                  initial={reduce ? false : { y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={reduce ? undefined : { y: -10, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="font-mono text-base text-accent sm:text-lg"
+                >
+                  {roles[currentRole]}
+                </motion.p>
+              </AnimatePresence>
             </div>
 
-            <p className="text-slate-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
               {t.hero.description}
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <a href="#projects" className="w-full sm:w-auto px-8 py-4 rounded-xl bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-1 flex items-center justify-center gap-2 cursor-pointer">
-                <span>{t.hero.viewWork}</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#projects"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent-strong px-5 py-3 text-sm font-medium text-accent-contrast transition-colors hover:bg-accent-strong-hover"
+              >
+                {t.hero.viewWork}
+                <ArrowRight size={16} weight="bold" />
               </a>
-              <a href="#contact" className="w-full sm:w-auto px-8 py-4 rounded-xl border-2 border-blue-200 text-blue-600 font-semibold transition-all duration-300 hover:bg-blue-50 hover:border-blue-300 flex items-center justify-center gap-2 cursor-pointer">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                <span>{t.hero.contactMe}</span>
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-line-strong px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-2"
+              >
+                <EnvelopeSimple size={16} />
+                {t.hero.contactMe}
               </a>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-4 mt-10">
-              <span className="text-sm text-slate-500">{t.hero.findMe}</span>
-              <div className="flex items-center gap-3">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 cursor-pointer" aria-label="GitHub">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" /></svg>
-                </a>
-                <a href="https://www.linkedin.com/in/ari-dwi-utomo-a3358b353" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 cursor-pointer" aria-label="LinkedIn">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                </a>
-                <a href="mailto:sosial.aridutomo@gmail.com" className="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 cursor-pointer" aria-label="Email">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                </a>
+            <div className="mt-9 flex items-center gap-4">
+              <span className="text-sm text-faint">{t.hero.findMe}</span>
+              <div className="flex items-center gap-2">
+                {socials.map(({ href, label, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    aria-label={label}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-line-strong hover:text-foreground"
+                  >
+                    <Icon size={18} />
+                  </a>
+                ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className={`flex-1 flex justify-center lg:justify-end ${mounted ? "animate-fade-in-up delay-200" : "opacity-0"}`}>
-            <div className="relative">
-              <div className="absolute inset-0 w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full border-2 border-blue-200 animate-pulse" />
-              <div className="absolute inset-4 w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full border border-yellow-300" />
-              <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full bg-linear-to-br from-blue-100 via-white to-yellow-100 flex items-center justify-center animate-float">
-                <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full gradient-border flex items-center justify-center overflow-hidden bg-white">
-                  <div className="text-6xl sm:text-7xl lg:text-8xl font-bold gradient-text">A</div>
+          {/* Visual */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative mx-auto w-full max-w-sm"
+          >
+            <div
+              aria-hidden
+              className="absolute -inset-4 -z-10 rounded-[2rem] bg-accent-soft blur-2xl"
+            />
+            {/* Monogram avatar — restored to the previous design (initial "A"
+                inside concentric rings with floating stack badges) instead of
+                the random placeholder photo. */}
+            <div className="relative mx-auto aspect-square w-72 sm:w-80">
+              {/* concentric rings */}
+              <div
+                aria-hidden
+                className="absolute inset-0 animate-pulse rounded-full border border-accent/20"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-4 rounded-full border border-line"
+              />
+              {/* core disc with the initial */}
+              <div className="absolute inset-8 flex animate-float items-center justify-center rounded-full bg-accent-soft">
+                <div className="flex h-full w-full items-center justify-center rounded-full border border-line bg-surface">
+                  <span className="bg-linear-to-br from-accent to-accent-hover bg-clip-text text-7xl font-bold text-transparent sm:text-8xl">
+                    A
+                  </span>
                 </div>
               </div>
-              <div className="absolute top-4 right-4 lg:top-8 lg:right-0 px-3 py-2 rounded-xl glass text-sm font-medium animate-float delay-100">
-                <span className="text-blue-600">.NET</span>
-              </div>
-              <div className="absolute bottom-8 left-0 px-3 py-2 rounded-xl glass text-sm font-medium animate-float delay-300">
-                <span className="text-cyan-600">Go</span>
-              </div>
-              <div className="absolute top-1/2 -right-4 lg:right-0 px-3 py-2 rounded-xl glass text-sm font-medium animate-float delay-500">
-                <span className="text-sky-500">Flutter</span>
-              </div>
-              <div className="absolute bottom-4 right-8 lg:bottom-8 lg:right-8 px-3 py-2 rounded-xl glass text-sm font-medium animate-float delay-700">
-                <span className="text-yellow-600">Next.js</span>
-              </div>
+              {/* floating stack badges */}
+              <span
+                className="absolute right-0 top-1 animate-float rounded-lg border border-line bg-surface px-2.5 py-1 text-xs font-medium text-accent shadow-sm"
+                style={{ animationDelay: "0.2s" }}
+              >
+                .NET
+              </span>
+              <span
+                className="absolute bottom-12 left-0 animate-float rounded-lg border border-line bg-surface px-2.5 py-1 text-xs font-medium text-accent shadow-sm"
+                style={{ animationDelay: "0.9s" }}
+              >
+                Go
+              </span>
+              <span
+                className="absolute right-0 top-[44%] animate-float rounded-lg border border-line bg-surface px-2.5 py-1 text-xs font-medium text-accent shadow-sm"
+                style={{ animationDelay: "1.5s" }}
+              >
+                Flutter
+              </span>
+              <span
+                className="absolute bottom-1 right-10 animate-float rounded-lg border border-line bg-surface px-2.5 py-1 text-xs font-medium text-accent shadow-sm"
+                style={{ animationDelay: "2.1s" }}
+              >
+                Next.js
+              </span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -18,6 +18,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const savedLocale = localStorage.getItem("locale") as Locale;
     if (savedLocale && (savedLocale === "id" || savedLocale === "en")) {
+      // One-time read from localStorage on mount; cannot run during render (SSR).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocaleState(savedLocale);
     }
   }, []);
