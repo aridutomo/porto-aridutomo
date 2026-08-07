@@ -1,7 +1,7 @@
 services:
   nextjs-app:
-    #build: .
-    image: aridutomo12/porto-aridutomo:latest
+    build: . # Aktifkan kembali agar Jenkins bisa build dari Dockerfile
+    image: aridutomo12/porto-aridutomo:latest # Opsional: dipakai sebagai nama image hasil build
     container_name: porto-aridutomo
     restart: always
     expose:
@@ -9,8 +9,8 @@ services:
     environment:
       - NODE_ENV=production
     networks:
-      - nginx-network
+      - web-network # GANTI menjadi web-network agar bisa terhubung ke Nginx & Jenkins
 
 networks:
-  nginx-network:
+  web-network:
     external: true
